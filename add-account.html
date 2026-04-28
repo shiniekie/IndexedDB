@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Add Account</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Add Account</h2>
+
+            <input type="text" id="site" placeholder="Site">
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+
+            <input type="file" id="imageInput">
+
+            <button onclick="saveAccount()">
+                <i class="fas fa-save"></i> Save
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button onclick="window.location='home.html'">
+            <i class="fas fa-home"></i><br>Home
+        </button>
+
+        <button onclick="window.location='add-account.html'">
+            <i class="fas fa-plus-circle"></i><br>Add
+        </button>
+
+        <button onclick="window.location='profile.html'">
+            <i class="fas fa-user"></i><br>Profile
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/db.js"></script>
+    <script src="js/accounts.js"></script>
+
+    <script>
+        function initPage() {
+            if (typeof initDB === "function") {
+                initDB();
+            }
+        }
+
+        document.addEventListener("deviceready", initPage);
+        window.onload = initPage;
+    </script>
+
+</body>
+</html>
+
+<script>
+    //  Handle  Cordova and Browser
+    function initPage() {
+        if (typeof initDB === "function") {
+            initDB();
+        }
+
+        // Delay to ensure DB is ready
+        setTimeout(() => {
+            if (typeof loadEditData === "function") {
+                loadEditData();
+            }
+        }, 300);
+    }
+
+    // Cordova
+    document.addEventListener("deviceready", initPage);
+
+    // Browser fallback
+    window.onload = initPage;
+</script>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2 class="text-center">My Accounts</h2>
+
+        <button onclick="window.location='add-account.html'">Add Account</button>
+        <button onclick="window.location='profile.html'">Profile</button>
+        <button class="btn-secondary" onclick="logout()">Logout</button>
+
+        <ul id="accountList"></ul>
+
+    </div>
+
+    <!-- Floating Add Button -->
+    <button class="fab" onclick="window.location='add-account.html'">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button onclick="window.location='home.html'">
+            <i class="fas fa-home"></i><br>Home
+        </button>
+
+        <button onclick="window.location='add-account.html'">
+            <i class="fas fa-plus-circle"></i><br>Add
+        </button>
+
+        <button onclick="window.location='profile.html'">
+            <i class="fas fa-user"></i><br>Profile
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/db.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/accounts.js"></script>
+
+    <script>
+        function initPage() {
+            if (typeof initDB === "function") {
+                initDB();
+            }
+
+            setTimeout(() => {
+                if (typeof loadAccounts === "function") {
+                    loadAccounts();
+                }
+            }, 300);
+        }
+
+        document.addEventListener("deviceready", initPage);
+        window.onload = initPage;
+    </script>
+
+</body>
+</html>
+
+
+
+
+<script>
+    function initPage() {
+        //  Check if logged in
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+        if (!user) {
+            alert("Please login first");
+            window.location = "index.html";
+            return;
+        }
+
+        if (typeof initDB === "function") {
+            initDB();
+        }
+
+        // Delay to ensure DB is ready
+        setTimeout(() => {
+            if (typeof loadAccounts === "function") {
+                loadAccounts();
+            }
+        }, 300);
+    }
+
+    // Cordova
+    document.addEventListener("deviceready", initPage);
+
+    // Browser fallback
+    window.onload = initPage;
+</script>
