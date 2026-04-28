@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Profile</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- VIEW MODE -->
+        <div class="card text-center" id="profileView">
+
+            <img id="profileImage" class="profile-img">
+
+            <h2 id="viewFullname"></h2>
+            <p style="color:gray;">@<span id="viewUsername"></span></p>
+
+            <p>Password: ****</p>
+
+            <button onclick="enableEdit()">
+                <i class="fas fa-edit"></i> Edit Profile
+            </button>
+
+        </div>
+
+        <!-- EDIT MODE -->
+        <div class="card" id="profileEdit" style="display:none;">
+
+            <input type="text" id="profileFullname" placeholder="Full Name">
+            <input type="text" id="profileUsername" placeholder="Username">
+            <input type="password" id="profilePassword" placeholder="Password">
+            <input type="file" id="profileImageInput">
+
+            <button onclick="updateProfile()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+
+            <button class="btn-secondary" onclick="cancelEdit()">Cancel</button>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button onclick="window.location='home.html'">
+            <i class="fas fa-home"></i><br>Home
+        </button>
+
+        <button onclick="window.location='add-account.html'">
+            <i class="fas fa-plus-circle"></i><br>Add
+        </button>
+
+        <button onclick="window.location='profile.html'">
+            <i class="fas fa-user"></i><br>Profile
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/db.js"></script>
+    <script src="js/profile.js"></script>
+
+    <script>
+        function initPage() {
+            if (typeof initDB === "function") {
+                initDB();
+            }
+
+            setTimeout(() => {
+                if (typeof loadProfile === "function") {
+                    loadProfile();
+                }
+            }, 300);
+        }
+
+        document.addEventListener("deviceready", initPage);
+        window.onload = initPage;
+    </script>
+
+</body>
+</html>
+<script>
+    function initPage() {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+        alert("Please login first");
+        window.location = "index.html";
+        return;
+    }
+
+    const request = indexedDB.open("SecureVaultDB", 1);
+
+    request.onsuccess = function (e) {
+        db = e.target.result;
+
+        //  DB 
+        loadProfile();
+
+        // IMAGE PREVIEW
+        const input = document.getElementById("profileImageInput");
+        if (input) {
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        document.getElementById("profileImage").src = reader.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        }
+    };
+}
+document.addEventListener("deviceready", initPage);
+window.onload = initPage;
+</script>

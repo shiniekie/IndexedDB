@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Register</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Create Account</h2>
+
+            <input type="text" id="regFullname" placeholder="Full Name">
+            <input type="text" id="regUsername" placeholder="Username">
+            <input type="password" id="regPassword" placeholder="Password">
+            <input type="password" id="regConfirmPassword" placeholder="Confirm Password">
+
+            <button onclick="register()">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+
+            <p class="text-center" style="margin-top:15px;">
+                Already have an account?<br>
+                <a href="index.html">Sign In</a>
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        if (window.location.protocol !== "file:") {
+            document.write('<script src="cordova.js"><\/script>');
+        }
+    </script>
+
+    <script src="js/db.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        function initPage() {
+            if (typeof initDB === "function") {
+                initDB();
+            }
+        }
+
+        document.addEventListener("deviceready", initPage);
+        window.onload = initPage;
+    </script>
+
+</body>
+</html>
+
+<script>
+    function initPage() {
+        if (typeof initDB === "function") {
+            initDB();
+        }
+    }
+
+    function setupEvents() {
+        const passInput = document.getElementById("regPassword");
+
+        if (passInput) {
+            passInput.addEventListener("keypress", function(e) {
+                if (e.key === "Enter") {
+                    register();
+                }
+            });
+        }
+    }
+
+    // Cordova
+    document.addEventListener("deviceready", function () {
+        initPage();
+        setupEvents();
+    });
+
+    // Browser fallback
+    window.onload = function () {
+        initPage();
+        setupEvents();
+    };
+</script>
